@@ -9,7 +9,8 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def predict_image(folder_path):
     model = SimpleCNN().to(device)
-    model.load_state_dict(torch.load("../models/tank_model_20250408-165406.pth"))
+    model.load_state_dict(torch.load(
+        "../models/tank_model_20250408-180422.pth"))
     model.eval()
 
     results = {}
@@ -25,7 +26,7 @@ def predict_image(folder_path):
                 output = model(image_tensor)
                 _, predicted = torch.max(output, 1)
 
-            results[filename] = "Tank" if predicted.item() == 0 else "Not Tank"
+            results[filename] = "Not Tank" if predicted.item() == 0 else "Tank"
 
     return results
 

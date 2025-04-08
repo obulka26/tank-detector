@@ -10,11 +10,12 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def train_model(num_epochs=5):
     model = SimpleCNN().to(device)
-    train_loader = get_dataloader()
+    train_loader, val_loader = get_dataloader()
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    optimizer = optim.Adam(model.parameters(), lr=0.0001)
 
     for epoch in range(num_epochs):
+        model.train()
         total_loss = 0
         correct = 0
         total = 0
@@ -32,10 +33,39 @@ def train_model(num_epochs=5):
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
+        model.eval()
+        with torch.no_grad():
+            for images, labels in val_loader:
+                images, labels = images.to(device), labels.to(device)
 
-        accuracy = 100 * correct / total
+                outputs = model(images)
+                _, predicted = torch.max(outputs, 1)
 
-        print(f"Epoch [{epoch + 1}/{num_epochs}], Loss: {total_loss:.4f}")
+                print("Predicted:", predicted.tolist())  # Передбачені класи
+                print("Actual:", labels.tolist())  # Реальні класи
+                break
+        train_accuracy = 100 * correct / total
+
+        val_loss = 0
+        correct = 0
+        total = 0
+        with torch.no_grad():
+            for images, labels in val_loader:
+                images, labels = images.to(device), labels.to(device)
+                outputs = model(images)
+                loss = criterion(outputs, labels)
+                val_loss += loss.item()
+
+                _, predicted = torch.max(outputs.data, 1)
+                total += labels.size(0)
+                correct += (predicted == labels).sum().item()
+
+        val_accuracy = 100 * correct / total
+        print(
+            f"Epoch [{epoch + 1}/{num_epochs}], "
+            f"Train Loss: {total_loss:.4f}, Train Acc: {train_accuracy:.2f}%, "
+            f"Val Loss: {val_loss:.4f}, Val Acc: {val_accuracy:.2f}%"
+        )
 
     timestamp = time.strftime("%Y%m%d-%H%M%S")
     model_filename = f"../models/tank_model_{timestamp}.pth"
