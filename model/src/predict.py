@@ -9,7 +9,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def predict_image(folder_path):
     model = SimpleCNN().to(device)
-    model.load_state_dict(torch.load("../models/tank_model_20250408-160858.pth"))
+    model.load_state_dict(torch.load("../models/tank_model_20250408-165406.pth"))
     model.eval()
 
     results = {}
