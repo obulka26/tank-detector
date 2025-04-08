@@ -3,13 +3,14 @@ import time
 import torch.nn as nn
 import torch.optim as optim
 from dataset import get_dataloader
-from model import SimpleCNN
+from model import CustomResNet
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-def train_model(num_epochs=5):
-    model = SimpleCNN().to(device)
+def train_model(num_epochs=8):
+    # model = SimpleCNN().to(device)
+    model = CustomResNet().to(device)
     train_loader, val_loader = get_dataloader()
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=0.0001)

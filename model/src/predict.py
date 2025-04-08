@@ -1,6 +1,6 @@
 import torch
 from PIL import Image
-from model import SimpleCNN
+from model import CustomResNet
 from dataset import transform
 import os
 
@@ -8,9 +8,10 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def predict_image(folder_path):
-    model = SimpleCNN().to(device)
+    # model = SimpleCNN().to(device)
+    model = CustomResNet().to(device)
     model.load_state_dict(torch.load(
-        "../models/tank_model_20250408-180422.pth"))
+        "../models/tank_model_20250408-195041.pth"))
     model.eval()
 
     results = {}
