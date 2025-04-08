@@ -3,7 +3,7 @@ import time
 import torch.nn as nn
 import torch.optim as optim
 from dataset import get_dataloader
-from model.src.model import SimpleCNN
+from model import SimpleCNN
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
