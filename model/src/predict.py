@@ -1,15 +1,15 @@
 import torch
 from PIL import Image
 from torchvision.transforms import transforms
-from model import CustomResNet
-from dataset import transform
+from model.src.model import CustomResNet
+from model.src.dataset import transform
 import os
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 model = CustomResNet().to(device)
-model.load_state_dict(torch.load("../models/tank_model_20250408-195041.pth"))
+model.load_state_dict(torch.load("model/models/tank_model_20250408-195041.pth"))
 model.eval()
 
 
@@ -32,8 +32,8 @@ def predict_folder(folder_path):
     return results
 
 
-def predict_single_image(image: : Image.Image) -> str:
-    image = transform(image)
+def predict_single_image(image: Image.Image) -> str:
+    image_tensor = transform(image)
     image_tensor = image_tensor.unsqueeze(0).to(device)
     with torch.no_grad():
         output = model(image_tensor)
