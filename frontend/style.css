@@ -48,11 +48,3 @@ body {
   font-weight: bold;
   color: #333;
 }
-
-.prediction-result.tank {
-  color: green;
-}
-
-.prediction-result.not-tank {
-  color: red;
-}
