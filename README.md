@@ -29,6 +29,17 @@ This project uses public image datasets for training:
    - License: [Open Data Commons Database Contents License (DbCL) v1.0](https://opendatacommons.org/licenses/dbcl/1-0/)  
    - ✅ Free to use, including commercially, with attribution and compliance with the [ODbL license](https://opendatacommons.org/licenses/odbl/1-0/).
 
+
+## Dependencies and Licenses
+
+This project uses the following libraries:
+
+- **[PyTorch](https://pytorch.org/)** – BSD-style license  
+- **[FastAPI](https://fastapi.tiangolo.com/)** – MIT license  
+- **[Pillow](https://pillow.readthedocs.io/en/stable/)** – MIT-CMU license  
+- **[Torchvision](https://pytorch.org/vision/stable/index.html)** – BSD 3-Clause license  
+- **[Uvicorn](https://www.uvicorn.org/)** – BSD-3-Clause license
+
 ## Status
 
 🚧 In development
