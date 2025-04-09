@@ -1,0 +1,58 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #2e2e2e;
+  margin: 0;
+  padding: 0;
+  color: white;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  text-align: center;
+}
+
+
+.upload-btn {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 10px auto;
+  display: block;
+}
+
+.upload-btn:hover {
+  background-color: #45a049;
+}
+
+.result {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.image-preview {
+  margin: 10px 0;
+  max-width: 100%;
+  max-height: 300px;
+  overflow: hidden;
+  display: none;
+}
+
+.prediction-result {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.prediction-result.tank {
+  color: green;
+}
+
+.prediction-result.not-tank {
+  color: red;
+}
