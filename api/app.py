@@ -5,7 +5,7 @@ import io
 from fastapi.middleware.cors import CORSMiddleware
 
 
-from model.src.predict import predict_single_image
+from model.classification_model.src.predict import predict_single_image
 
 app = FastAPI()
 

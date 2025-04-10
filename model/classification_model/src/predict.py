@@ -1,15 +1,17 @@
 import torch
 from PIL import Image
 from torchvision.transforms import transforms
-from model.src.model import CustomResNet
-from model.src.dataset import transform
+from model.classification_model.src.model import CustomResNet
+from model.classification_model.src.dataset import transform
 import os
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 model = CustomResNet().to(device)
-model.load_state_dict(torch.load("model/models/tank_model_20250408-195041.pth"))
+model.load_state_dict(
+    torch.load("model/classification_model/models/tank_model_20250408-195041.pth")
+)
 model.eval()
 
 

@@ -1,0 +1,5 @@
+train: /Users/obulka/my_studies/pet_projects/tank-detector/model/object_detection_model/dataset/train/images
+val: /Users/obulka/my_studies/pet_projects/tank-detector/model/object_detection_model/dataset/valid/images
+
+nc: 2
+names: ["other", "tank"]
