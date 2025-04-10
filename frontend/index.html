@@ -18,10 +18,20 @@
       <button type="submit" class="upload-btn">Upload Image</button>
     </form>
 
-    <div id="result" class="result">
-      <div id="imagePreview"></div>
+    <div class="result">
+      <div class="image-container">
+        <div class="image-box">
+          <p>Input Image</p>
+          <img id="inputImage" class="preview" src="" alt="Input Image">
+        </div>
+        <div class="image-box">
+          <p>Processed Image</p>
+          <img id="outputImage" class="preview" src="" alt="Processed Image">
+        </div>
+      </div>
       <div id="predictionResult" class="prediction-result"></div>
     </div>
+
     <script src="script.js"></script>
 </body>
 

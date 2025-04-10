@@ -1,7 +1,8 @@
 from fastapi import FastAPI, UploadFile, File
-from fastapi.responses import JSONResponse, FileResponse
+from fastapi.responses import JSONResponse
 from PIL import Image
 import io
+import base64
 from fastapi.middleware.cors import CORSMiddleware
 from model.object_detection_model.src.predict import predict_single_image
 
@@ -20,18 +21,18 @@ app.add_middleware(
 async def predict(file: UploadFile = File(...)):
     contents = await file.read()
     image = Image.open(io.BytesIO(contents)).convert("RGB")
+    predictions, processed_image = predict_single_image(image)
 
-    predictions, image_path = predict_single_image(image)
+    pil_image = Image.fromarray(processed_image)
+
+    buffered = io.BytesIO()
+    pil_image.save(buffered, format="JPEG")
+    buffered.seek(0)
+    encoded_image = base64.b64encode(buffered.getvalue()).decode("utf-8")
 
     return JSONResponse(
         content={
-            "filename": file.filename,
             "predictions": predictions,
-            "image_url": "/result",
+            "processed_image": encoded_image,
         }
     )
-
-
-@app.get("/result")
-async def get_result():
-    return FileResponse("result.jpg", media_type="image/jpeg")

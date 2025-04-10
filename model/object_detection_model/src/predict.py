@@ -10,13 +10,12 @@ model = YOLO(
 
 
 def predict_single_image(image: Image.Image):
-    """
-    Отримує зображення PIL, робить передбачення та повертає результат.
-    """
     results = model(image)
 
-    boxes = results[0].boxes.xyxy.tolist() if results[0].boxes is not None else []
-    scores = results[0].boxes.conf.tolist() if results[0].boxes is not None else []
+    boxes = results[0].boxes.xyxy.tolist(
+    ) if results[0].boxes is not None else []
+    scores = results[0].boxes.conf.tolist(
+    ) if results[0].boxes is not None else []
     labels = (
         [results[0].names[int(cls)] for cls in results[0].boxes.cls]
         if results[0].boxes is not None
@@ -28,9 +27,9 @@ def predict_single_image(image: Image.Image):
         for label, score, box in zip(labels, scores, boxes)
     ]
 
-    results[0].save(filename="result.jpg")
+    result_image = results[0].plot()
 
-    return predictions, "result.jpg"
+    return predictions, result_image
 
 
 def predict_folder(folder_path: str):
