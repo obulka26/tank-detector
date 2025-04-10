@@ -1,29 +1,36 @@
-import os
+import io
 from PIL import Image
 from ultralytics import YOLO
+import os
+from fastapi.responses import JSONResponse
 
-model = YOLO("models/attempt_2/tank_detection_20250410-144504/weights/best.pt")
+model = YOLO(
+    "model/object_detection_model/models/attempt_2/tank_detection_20250410-144504/weights/best.pt"
+)
 
 
-def predict_single_image(image_path: str):
-    img = Image.open(image_path)
-    results = model(image_path)
+def predict_single_image(image: Image.Image):
+    """
+    Отримує зображення PIL, робить передбачення та повертає результат.
+    """
+    results = model(image)
 
-    results[0].show()
+    boxes = results[0].boxes.xyxy.tolist() if results[0].boxes is not None else []
+    scores = results[0].boxes.conf.tolist() if results[0].boxes is not None else []
+    labels = (
+        [results[0].names[int(cls)] for cls in results[0].boxes.cls]
+        if results[0].boxes is not None
+        else []
+    )
+
+    predictions = [
+        {"label": label, "confidence": score, "bbox": box}
+        for label, score, box in zip(labels, scores, boxes)
+    ]
+
     results[0].save(filename="result.jpg")
 
-    boxes = results[0].boxes
-    names = results[0].names
-
-    print(f"\nPredictions for {image_path}:")
-    if boxes is not None:
-        for box, cls_id, conf in zip(boxes.xyxy, boxes.cls, boxes.conf):
-            label = names[int(cls_id)]
-            print(
-                f"  → Predicted: {label} with confidence {conf:.2f}, Bounding Box: {
-                    box
-                }"
-            )
+    return predictions, "result.jpg"
 
 
 def predict_folder(folder_path: str):
