@@ -79,6 +79,8 @@ This project uses the following libraries:
 - **[Torchvision](https://pytorch.org/vision/stable/index.html)** – BSD 3-Clause license  
 - **[Uvicorn](https://www.uvicorn.org/)** – BSD-3-Clause license
 - **[Ultralytics YOLO](https://www.ultralytics.com/)** – [AGPL-3.0 License](https://www.gnu.org/licenses/agpl-3.0.html) for non-commercial use. For commercial use, an [Ultralytics Enterprise License](https://www.ultralytics.com/) is required.
+- **[OpenCV](https://opencv.org/)** – Apache 2.0 license  
+- **[imageio](https://imageio.readthedocs.io/en/stable/)** – BSD 2-Clause license
 
 ## Status
 
