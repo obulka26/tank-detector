@@ -1,4 +1,3 @@
-import io
 from PIL import Image
 from ultralytics import YOLO
 import os
@@ -12,10 +11,8 @@ model = YOLO(
 def predict_single_image(image: Image.Image):
     results = model(image)
 
-    boxes = results[0].boxes.xyxy.tolist(
-    ) if results[0].boxes is not None else []
-    scores = results[0].boxes.conf.tolist(
-    ) if results[0].boxes is not None else []
+    boxes = results[0].boxes.xyxy.tolist() if results[0].boxes is not None else []
+    scores = results[0].boxes.conf.tolist() if results[0].boxes is not None else []
     labels = (
         [results[0].names[int(cls)] for cls in results[0].boxes.cls]
         if results[0].boxes is not None

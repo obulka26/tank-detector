@@ -1,40 +1,72 @@
-async function uploadImage() {
-  const fileInput = document.getElementById('imageUpload');
+async function uploadFile() {
+  const fileInput = document.getElementById("fileUpload");
   const file = fileInput.files[0];
   if (!file) {
-    alert("Please select an image!");
+    alert("Please select a file!");
     return;
   }
-  const formData = new FormData();
-  formData.append('file', file);
 
-  const inputImage = document.getElementById('inputImage');
-  inputImage.src = URL.createObjectURL(file);
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const inputImage = document.getElementById("inputImage");
+  const outputImage = document.getElementById("outputImage");
+  const inputGif = document.getElementById("inputGif");
+  const outputGif = document.getElementById("outputGif");
+
+  inputImage.style.display = "none";
+  outputImage.style.display = "none";
+  inputGif.style.display = "none";
+  outputGif.style.display = "none";
+
+  const resultDiv = document.getElementById("predictionResult");
+  resultDiv.innerHTML = "";
+  resultDiv.style.color = "white";
+
+  const fileURL = URL.createObjectURL(file);
+  if (file.type.startsWith("image/")) {
+    inputImage.src = fileURL;
+    inputImage.style.display = "block";
+  } else if (file.type.startsWith("video/")) {
+    inputGif.src = ""; // очищення
+    inputGif.style.display = "none";
+  }
 
   try {
-    const response = await fetch('http://127.0.0.1:8000/predict', {
-      method: 'POST',
+    const response = await fetch("http://127.0.0.1:8000/predict", {
+      method: "POST",
       body: formData,
     });
     const data = await response.json();
 
-    const outputImage = document.getElementById('outputImage');
-    outputImage.src = `data:image/jpeg;base64,${data.processed_image}`;
+    if (file.type.startsWith("image/")) {
+      outputImage.src = `data:image/jpeg;base64,${data.processed_image}`;
+      outputImage.style.display = "block";
 
-    const resultDiv = document.getElementById('predictionResult');
+      const tankDetected = data.predictions.some(
+        (prediction) => prediction.label.toLowerCase() === "tank"
+      );
+      resultDiv.innerHTML = tankDetected ? "Tank Detected!" : "No Tank Detected!";
+      resultDiv.style.color = tankDetected ? "green" : "red";
+    } else if (file.type.startsWith("video/")) {
+      const inputUrl = `data:image/gif;base64,${data.input_gif}`;
+      const outputUrl = `data:image/gif;base64,${data.output_gif}`;
 
-    const tankDetected = data.predictions.some(prediction => prediction.label.toLowerCase() === 'tank');
+      inputGif.src = "";
+      outputGif.src = "";
+      setTimeout(() => {
+        inputGif.src = inputUrl;
+        outputGif.src = outputUrl;
+        inputGif.style.display = "block";
+        outputGif.style.display = "block";
+      }, 1);
 
-    if (tankDetected) {
-      resultDiv.innerHTML = "Tank Detected!";
-      resultDiv.style.color = "green";
-    } else {
-      resultDiv.innerHTML = "No Tank Detected!";
-      resultDiv.style.color = "red";
+      resultDiv.innerHTML = data.has_tank ? "Tank Detected in Video!" : "No Tank Found in Video!";
+      resultDiv.style.color = data.has_tank ? "green" : "red";
     }
   } catch (error) {
-    console.error('Error uploading image:', error);
-    alert("An error occurred while uploading the image.");
+    console.error("Error uploading file:", error);
+    alert("An error occurred while uploading the file.");
   }
 }
 
