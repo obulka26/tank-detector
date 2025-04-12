@@ -1,0 +1,23 @@
+FROM python:3.12.3-slim
+WORKDIR /api_dir
+
+COPY docker/requirements.txt docker/requirements.txt
+
+RUN ls -la /api_dir
+
+RUN pip install --upgrade pip
+RUN pip install -r docker/requirements.txt
+
+RUN apt-get update && apt-get install -y \
+    ffmpeg \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY api/app.py api/app.py
+COPY model/object_detection_model/src/predict.py model/object_detection_model/src/predict.py
+COPY model/object_detection_model/models/attempt_2/tank_detection_20250410-144504/weights/best.pt model/object_detection_model/models/attempt_2/tank_detection_20250410-144504/weights/best.pt
+
+EXPOSE 8000
+
+CMD ["uvicorn", "api.app:app", "--host", "0.0.0.0", "--port", "8000"]

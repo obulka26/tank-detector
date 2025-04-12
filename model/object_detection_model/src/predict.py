@@ -1,7 +1,6 @@
 from PIL import Image
 from ultralytics import YOLO
 import os
-from fastapi.responses import JSONResponse
 
 model = YOLO(
     "model/object_detection_model/models/attempt_2/tank_detection_20250410-144504/weights/best.pt"
