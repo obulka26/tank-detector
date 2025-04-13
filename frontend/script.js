@@ -32,8 +32,9 @@ async function uploadFile() {
     inputGif.style.display = "none";
   }
 
+
   try {
-    const response = await fetch("http://127.0.0.1:8000/predict", {
+    const response = await fetch("http://api.local:8081/predict", {
       method: "POST",
       body: formData,
     });

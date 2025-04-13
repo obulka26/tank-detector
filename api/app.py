@@ -139,3 +139,8 @@ async def predict(file: UploadFile = File(...)):
         )
     else:
         return {"error": "Unsupported file format"}
+
+
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
